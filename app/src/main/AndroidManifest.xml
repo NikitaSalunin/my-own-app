@@ -11,7 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:label="@string/main_form">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,7 +22,7 @@
         </activity>
         <activity
             android:name=".Main2Activity"
-            android:label="@string/title_activity_main2"
+            android:label="@string/second_form"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
