@@ -21,8 +21,8 @@ public class Main2Activity extends AppCompatActivity {
         setContentView(R.layout.activity_main2);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        final Random random = new Random();
-   
+       
+
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -32,22 +32,5 @@ public class Main2Activity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-    }
-
-    public static class Main
-    {
-        public static int getRandomDiceNumber()
-        {
-            return (int) (Math.random() * 6);
-        }
-        public static void main(String[] args)
-        {
-            for (int i = 0; i < 10; i++)
-            {
-                int x = getRandomDiceNumber();
-
-                System.out.println(x);
-            }
-        }
     }
 }
