@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
         addListenerOnButton4();
     }
 
-
     public void addListenerOnButton() {
         button = (Button) findViewById(R.id.button);
         button.setOnClickListener(
@@ -37,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
                 });
     }
+
     public void addListenerOnButton2() {
         button2 = (Button) findViewById(R.id.button2);
         button2.setOnClickListener(
@@ -48,7 +48,8 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                 });
-}
+    }
+
     public void addListenerOnButton3() {
         button3 = (Button) findViewById(R.id.button3);
         button3.setOnClickListener(
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
                 });
     }
+
     public void addListenerOnButton4() {
         button4 = (Button) findViewById(R.id.button4);
         button4.setOnClickListener(
