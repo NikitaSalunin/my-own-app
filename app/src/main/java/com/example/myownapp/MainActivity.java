@@ -8,7 +8,6 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
-
     private Button button;
     private Button button2;
     private Button button3;
@@ -23,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
         addListenerOnButton3();
         addListenerOnButton4();
     }
-
     public void addListenerOnButton() {
         button = (Button) findViewById(R.id.button);
         button.setOnClickListener(
@@ -33,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), Main2Activity.class);
                         startActivity(intent);
                     }
-
                 });
     }
 
