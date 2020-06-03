@@ -1,50 +1,104 @@
 package com.example.myownapp;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
-import com.google.android.material.snackbar.Snackbar;
-
+import java.util.Date;
+import java.util.Objects;
 import java.util.Random;
 
 public class Main2Activity extends AppCompatActivity {
-    TextView display;
-    private View add;
+    private TextView num1; // первое случайное число от 0 до 10
+    private TextView num2; // второе случайное число от 0 до 10
+    private TextView operator; // оператор (может быть +, -, *
+    private EditText result;   // ответ, введенный пользователем
+    private Button check;      // кнопка проверки ответа
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        final Random random = new Random();
-        display = (TextView) findViewById(R.id.textView2);
+        // подготовим данные для подсчета
+        // сгенерируем случайные числа для вычислений от 0 до 10
+        Random generator = new Random(new Date().getTime());
+        Integer n1 = generator.nextInt(10);
+        Integer n2 = generator.nextInt(10);
+        // сгенерируем случайный оператор
+        String[] operators = new String[] {"+", "-", "*"};
+        Integer index = new Random(new Date().getTime()).nextInt(3);
+        String oper = operators[index];
 
-        Button fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        // Заполняем TextView для отображения пользователю
+        num1 = findViewById(R.id.num1);
+        num1.setText(n1.toString());
+
+        num2 = findViewById(R.id.num2);
+        num2.setText(n2.toString());
+
+        operator = findViewById(R.id.operator);
+        operator.setText(oper);
+
+        check = findViewById(R.id.check);
+        check.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).show();
-            }
-        });
-        add.setOnClickListener(new View.OnClickListener() {
-            int [] array = new int [5];
             public void onClick(View v) {
-                String str = "";
-                for (int i=0;i<array.length;i++){
-                    array[i] = (int) Math.random()*10;
-                    str += (array[i]  + "\n");
-                }
-                display.setText(str);
-
+                checkResult();
             }
         });
+    }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void checkResult() {
+        result = findViewById(R.id.result);
+        Integer actual;
+        try {
+            actual = Integer.valueOf(result.getText().toString());
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Введите ответ", Toast.LENGTH_LONG).show();
+            return;
+        }
+        Integer expected;
+        // считываем случайные числа из TextView
+        Integer n1 = Integer.valueOf(num1.getText().toString());
+        Integer n2 = Integer.valueOf(num2.getText().toString());
+        // считываем случайный оператор из TextView
+        String op = operator.getText().toString();
+        // вычисляем ожидаемое значение
+        switch (op) {
+            case "+":
+                expected = n1 + n2;
+                break;
+            case "-":
+                expected = n1 - n2;
+                break;
+            case "*":
+                expected = n1 * n2;
+                break;
+            default:
+                expected = Integer.MAX_VALUE;
+        }
+        // сравниваем ожидаемое значение и введенный пользователем ответ
+        if (Objects.equals(expected, actual)) {
+            Toast.makeText(this, "Поздравляем! Ваш ответ правильный", Toast.LENGTH_LONG).show();
+            // возвращаемся в основное меню
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+        } else {
+            Toast.makeText(this, "Вы ввели неверный ответ", Toast.LENGTH_LONG).show();
+            // пересоздаем активити, чтобы обновить вопрос
+            recreate();
+        }
     }
 
 
