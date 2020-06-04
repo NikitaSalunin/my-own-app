@@ -3,9 +3,11 @@ package com.example.myownapp;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +24,8 @@ public class Main2Activity extends AppCompatActivity {
     private TextView operator; // оператор (может быть +, -, *
     private EditText result;   // ответ, введенный пользователем
     private Button check;      // кнопка проверки ответа
+    private TextView tview;
+    private ProgressBar prbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +59,21 @@ public class Main2Activity extends AppCompatActivity {
                 checkResult();
             }
         });
+        tview = findViewById(R.id.textView2);
+        prbar =  findViewById(R.id.progressBar2);
+        new CountDownTimer(60000, 1000) {
+            @Override
+            public void onTick(long l) {
+                tview.setText("" + l/1000);
+                prbar.setProgress((int) (l/1000));
+
+            }
+
+            @Override
+            public void onFinish() {
+                tview.setText("Время закончилось");
+            }
+        }.start();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -92,13 +111,15 @@ public class Main2Activity extends AppCompatActivity {
         if (Objects.equals(expected, actual)) {
             Toast.makeText(this, "Поздравляем! Ваш ответ правильный", Toast.LENGTH_LONG).show();
             // возвращаемся в основное меню
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
+            //Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            //startActivity(intent);
+            recreate();
         } else {
             Toast.makeText(this, "Вы ввели неверный ответ", Toast.LENGTH_LONG).show();
             // пересоздаем активити, чтобы обновить вопрос
             recreate();
         }
+
     }
 
 
