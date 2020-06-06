@@ -1,5 +1,6 @@
 package com.example.myownapp;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -20,7 +21,7 @@ import java.util.Random;
 public class Main2Activity extends AppCompatActivity {
     private TextView num1; // первое случайное число от 0 до 10
     private TextView num2; // второе случайное число от 0 до 10
-    private TextView operator; // оператор (может быть +, -, *
+    private TextView operator; // оператор (может быть +, -, *)
     private EditText result;   // ответ, введенный пользователем
     private Button check;      // кнопка проверки ответа
     private TextView attempts;
@@ -74,12 +75,12 @@ public class Main2Activity extends AppCompatActivity {
             public void onTick(long l) {
                 timeout.setText("" + l/1000);
                 prbar.setProgress((int) (l/1000));
-
             }
             @Override
             public void onFinish() {
-                attempts.setText("Время закончилось");
+                attempts.setText("");
             }
+
         }.start();
     }
 
@@ -141,6 +142,11 @@ public class Main2Activity extends AppCompatActivity {
             attemptsCount = attemptsCount - 1;
             // пересоздаем активити, чтобы обновить вопрос
             recreate();
+        }
+        if (attemptsCount == 0) {
+            Toast.makeText(this, "Игра окончена", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
         }
 
     }
