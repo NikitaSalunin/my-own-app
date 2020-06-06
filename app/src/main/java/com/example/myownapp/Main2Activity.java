@@ -1,6 +1,5 @@
 package com.example.myownapp;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -24,7 +23,9 @@ public class Main2Activity extends AppCompatActivity {
     private TextView operator; // оператор (может быть +, -, *
     private EditText result;   // ответ, введенный пользователем
     private Button check;      // кнопка проверки ответа
-    private TextView tview;
+    private TextView attempts;
+    private Integer attemptsCount;
+    private TextView timeout;
     private ProgressBar prbar;
 
     @Override
@@ -59,21 +60,41 @@ public class Main2Activity extends AppCompatActivity {
                 checkResult();
             }
         });
-        tview = findViewById(R.id.textView2);
+        timeout = findViewById(R.id.timeout);
+        timeout.setText("");
+        attempts = findViewById(R.id.attempts);
+        if (savedInstanceState != null)
+            attemptsCount =  savedInstanceState.getInt("attemptsCount", 3);
+        else
+            attemptsCount = 3;
+        attempts.setText("Осталось попыток: " + attemptsCount.toString());
         prbar =  findViewById(R.id.progressBar2);
         new CountDownTimer(60000, 1000) {
             @Override
             public void onTick(long l) {
-                tview.setText("" + l/1000);
+                timeout.setText("" + l/1000);
                 prbar.setProgress((int) (l/1000));
 
             }
-
             @Override
             public void onFinish() {
-                tview.setText("Время закончилось");
+                attempts.setText("Время закончилось");
             }
         }.start();
+    }
+
+    // сохраняем счетчик попыток до перезагрузки
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putInt("attemptsCount", attemptsCount);
+    }
+
+    // восстанавливаем счетчик попыток после перезагрузки
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        attemptsCount = savedInstanceState.getInt("attemptsCount", 3);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -113,9 +134,11 @@ public class Main2Activity extends AppCompatActivity {
             // возвращаемся в основное меню
             //Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             //startActivity(intent);
+            attemptsCount = 3;
             recreate();
         } else {
             Toast.makeText(this, "Вы ввели неверный ответ", Toast.LENGTH_LONG).show();
+            attemptsCount = attemptsCount - 1;
             // пересоздаем активити, чтобы обновить вопрос
             recreate();
         }
