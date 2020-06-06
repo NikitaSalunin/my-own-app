@@ -75,12 +75,12 @@ public class Main2Activity extends AppCompatActivity {
             public void onTick(long l) {
                 timeout.setText("" + l/1000);
                 prbar.setProgress((int) (l/1000));
+
             }
             @Override
             public void onFinish() {
                 attempts.setText("");
             }
-
         }.start();
     }
 
