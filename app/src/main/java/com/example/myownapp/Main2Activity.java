@@ -38,6 +38,8 @@ public class Main2Activity extends AppCompatActivity {
         Random generator = new Random(new Date().getTime());
         Integer n1 = generator.nextInt(10);
         Integer n2 = generator.nextInt(10);
+        // если n1 < n2, меняем их местами
+        if (n1 < n2) swap(n1, n2);
         // сгенерируем случайный оператор
         String[] operators = new String[] {"+", "-", "*"};
         Integer index = new Random(new Date().getTime()).nextInt(3);
@@ -79,9 +81,22 @@ public class Main2Activity extends AppCompatActivity {
             }
             @Override
             public void onFinish() {
-                attempts.setText("");
+                // сбрасываем счетчик
+                attemptsCount = 3;
+                // возвращаемся в основное меню
+                Toast.makeText(getApplicationContext(), "Время закончилось", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+
             }
         }.start();
+    }
+
+    // меняем числа местами
+    private void swap(Integer n1, Integer n2) {
+        Integer tmp = n1;
+        n1 = n2;
+        n2 = tmp;
     }
 
     // сохраняем счетчик попыток до перезагрузки
