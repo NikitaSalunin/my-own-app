@@ -61,7 +61,7 @@ public class Main3Activity extends AppCompatActivity {
         operator = findViewById(R.id.operator);
         operator.setText(oper);
 
-        operator2 = findViewById(R.id.operator);
+        operator2 = findViewById(R.id.operator2);
         operator2.setText(oper);
 
         check = findViewById(R.id.check);
