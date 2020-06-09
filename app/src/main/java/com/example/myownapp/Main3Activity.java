@@ -19,17 +19,18 @@ import java.util.Objects;
 import java.util.Random;
 
 public class Main3Activity extends AppCompatActivity {
-    private TextView num1; // первое случайное число от 0 до 10
-    private TextView num2; // второе случайное число от 0 до 10
-    private TextView num3;
-    private TextView operator; // оператор (может быть +, -, *)
-    private TextView operator2;
-    private EditText result;   // ответ, введенный пользователем
-    private Button check;      // кнопка проверки ответа
-    private TextView attempts;
-    private Integer attemptsCount;
-    private TextView timeout;
+    private TextView    num1; // первое случайное число от 0 до 10
+    private TextView    num2; // второе случайное число от 0 до 10
+    private TextView    num3;
+    private TextView    operator; // оператор (может быть +, -, *)
+    private TextView    operator2;
+    private EditText    result;   // ответ, введенный пользователем
+    private Button      check;      // кнопка проверки ответа
+    private TextView    attempts;
+    private Integer     attemptsCount;
+    private TextView    timeout;
     private ProgressBar prbar;
+    private CountDownTimer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +43,12 @@ public class Main3Activity extends AppCompatActivity {
         Integer n2 = generator.nextInt(50);
         Integer n3 = generator.nextInt(50);
         // если n1 < n2, меняем их местами
-        if (n1 < n2) swap(n1, n2);
         // сгенерируем случайный оператор
         String[] operators = new String[] {"+", "-", "*"};
-        Integer index = new Random(new Date().getTime()).nextInt(3);
-        String oper = operators[index];
+        Integer index = generator.nextInt(3);
+        String oper1 = operators[index];
+        index = generator.nextInt(3);
+        String oper2 = operators[index];
 
         // Заполняем TextView для отображения пользователю
         num1 = findViewById(R.id.num1);
@@ -59,10 +61,10 @@ public class Main3Activity extends AppCompatActivity {
         num3.setText(n3.toString());
 
         operator = findViewById(R.id.operator);
-        operator.setText(oper);
+        operator.setText(oper1);
 
         operator2 = findViewById(R.id.operator2);
-        operator2.setText(oper);
+        operator2.setText(oper2);
 
         check = findViewById(R.id.check);
         check.setOnClickListener(new View.OnClickListener() {
@@ -81,7 +83,7 @@ public class Main3Activity extends AppCompatActivity {
             attemptsCount = 3;
         attempts.setText("Осталось попыток: " + attemptsCount.toString());
         prbar =  findViewById(R.id.progressBar2);
-        new CountDownTimer(40000, 1000) {
+        timer = new CountDownTimer(40000, 1000) {
             @Override
             public void onTick(long l) {
                 timeout.setText("" + l/1000);
@@ -101,12 +103,11 @@ public class Main3Activity extends AppCompatActivity {
         }.start();
     }
 
-    // меняем числа местами
-    private void swap(Integer n1, Integer n2) {
-        Integer tmp = n1;
-
-        n1 = n2;
-        n2 = tmp;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (timer != null) timer.cancel();
+        timer = null;
     }
 
     // сохраняем счетчик попыток до перезагрузки
@@ -135,33 +136,61 @@ public class Main3Activity extends AppCompatActivity {
             return;
         }
         Integer expected;
-        Integer expected2;
         // считываем случайные числа из TextView
         Integer n1 = Integer.valueOf(num1.getText().toString());
         Integer n2 = Integer.valueOf(num2.getText().toString());
-        Integer n3 = Integer.valueOf(num1.getText().toString());
+        Integer n3 = Integer.valueOf(num3.getText().toString());
         // считываем случайный оператор из TextView
-        String op = operator.getText().toString();
+        String op1 = operator.getText().toString();
         String op2 = operator2.getText().toString();
         // вычисляем ожидаемое значение
-        switch (op) {
-            case "+":
-                expected = n1 + n2;
-                expected2 = n2 + n3;
-                break;
-            case "-":
-                expected = n1 - n2;
-                expected2 = n2 - n3;
-                break;
-            case "*":
-                expected = n1 * n2;
-                expected2 = n2 * n3;
+        if ("+".equals(op1)) {
+            switch (op2) {
+                case "+":
+                    expected = n1 + n2 + n3;
+                    break;
+                case "-":
+                    expected = n1 + n2 - n3;
+                    break;
+                case "*":
+                    expected = (n1 + n2) * n3;
                     break;
 
-            default:
-                expected = Integer.MAX_VALUE;
-                expected2 = Integer.MAX_VALUE;
-        }
+                default:
+                    expected = Integer.MAX_VALUE;
+            }
+        } else if ("-".equals(op1)) {
+            switch (op2) {
+                case "+":
+                    expected = n1 - n2 + n3;
+                    break;
+                case "-":
+                    expected = n1 - n2 - n3;
+                    break;
+                case "*":
+                    expected = (n1 - n2) * n3;
+                    break;
+
+                default:
+                    expected = Integer.MAX_VALUE;
+            }
+        } else if ("*".equals(op1)) {
+            switch (op2) {
+                case "+":
+                    expected = n1 * n2 + n3;
+                    break;
+                case "-":
+                    expected = n1 * n2 - n3;
+                    break;
+                case "*":
+                    expected = (n1 * n2) * n3;
+                    break;
+
+                default:
+                    expected = Integer.MAX_VALUE;
+            }
+        } else expected = Integer.MAX_VALUE;
+
         // сравниваем ожидаемое значение и введенный пользователем ответ
         if (Objects.equals(expected, actual)) {
             Toast.makeText(this, "Поздравляем! Ваш ответ правильный", Toast.LENGTH_LONG).show();
@@ -169,14 +198,17 @@ public class Main3Activity extends AppCompatActivity {
             //Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             //startActivity(intent);
             attemptsCount = 3;
+            timer.cancel();
             recreate();
         } else {
             Toast.makeText(this, "Вы ввели неверный ответ", Toast.LENGTH_LONG).show();
             attemptsCount = attemptsCount - 1;
+            timer.cancel();
             // пересоздаем активити, чтобы обновить вопрос
             recreate();
         }
         if (attemptsCount == 0) {
+            timer.cancel();
             Toast.makeText(this, "Игра окончена", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);

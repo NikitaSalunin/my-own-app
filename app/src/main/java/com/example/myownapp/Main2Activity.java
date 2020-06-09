@@ -28,6 +28,7 @@ public class Main2Activity extends AppCompatActivity {
     private Integer attemptsCount;
     private TextView timeout;
     private ProgressBar prbar;
+    private CountDownTimer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +40,11 @@ public class Main2Activity extends AppCompatActivity {
         Integer n1 = generator.nextInt(10);
         Integer n2 = generator.nextInt(10);
         // если n1 < n2, меняем их местами
-        if (n1 < n2) swap(n1, n2);
+        if (n1 < n2) {
+            Integer tmp = n1;
+            n1 = n2;
+            n2 = tmp;
+        }
         // сгенерируем случайный оператор
         String[] operators = new String[] {"+", "-", "*"};
         Integer index = new Random(new Date().getTime()).nextInt(3);
@@ -72,7 +77,7 @@ public class Main2Activity extends AppCompatActivity {
             attemptsCount = 3;
         attempts.setText("Осталось попыток: " + attemptsCount.toString());
         prbar =  findViewById(R.id.progressBar2);
-        new CountDownTimer(60000, 1000) {
+        timer = new CountDownTimer(60000, 1000) {
             @Override
             public void onTick(long l) {
                 timeout.setText("" + l/1000);
@@ -92,11 +97,11 @@ public class Main2Activity extends AppCompatActivity {
         }.start();
     }
 
-    // меняем числа местами
-    private void swap(Integer n1, Integer n2) {
-        Integer tmp = n1;
-        n1 = n2;
-        n2 = tmp;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (timer != null) timer.cancel();
+        timer = null;
     }
 
     // сохраняем счетчик попыток до перезагрузки
@@ -151,14 +156,17 @@ public class Main2Activity extends AppCompatActivity {
             //Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             //startActivity(intent);
             attemptsCount = 3;
+            timer.cancel();
             recreate();
         } else {
             Toast.makeText(this, "Вы ввели неверный ответ", Toast.LENGTH_LONG).show();
             attemptsCount = attemptsCount - 1;
+            timer.cancel();
             // пересоздаем активити, чтобы обновить вопрос
             recreate();
         }
         if (attemptsCount == 0) {
+            timer.cancel();
             Toast.makeText(this, "Игра окончена", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
