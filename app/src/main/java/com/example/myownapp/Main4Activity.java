@@ -35,7 +35,7 @@ public class Main4Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main3);
+        setContentView(R.layout.activity_main4);
         // подготовим данные для подсчета
         // сгенерируем случайные числа для вычислений от 0 до 10
         Random generator = new Random(new Date().getTime());
