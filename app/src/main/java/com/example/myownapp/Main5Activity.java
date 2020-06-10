@@ -37,17 +37,18 @@ public class Main5Activity extends AppCompatActivity {
         // подготовим данные для подсчета
         // сгенерируем случайные числа для вычислений от 0 до 10
         Random generator = new Random(new Date().getTime());
-        Integer n1 = generator.nextInt(10);
-        Integer n2 = generator.nextInt(10);
+        Integer n1 = generator.nextInt(100);
+        Integer n2 = generator.nextInt(100);
         // если n1 < n2, меняем их местами
         if (n1 < n2) {
             Integer tmp = n1;
             n1 = n2;
             n2 = tmp;
         }
+        //if(n1/n2){}
         // сгенерируем случайный оператор
-        String[] operators = new String[] {"+", "-", "*"};
-        Integer index = new Random(new Date().getTime()).nextInt(3);
+        String[] operators = new String[] {"/"};
+        Integer index = new Random(new Date().getTime()).nextInt(1);
         String oper = operators[index];
 
         // Заполняем TextView для отображения пользователю
@@ -77,7 +78,7 @@ public class Main5Activity extends AppCompatActivity {
             attemptsCount = 3;
         attempts.setText("Осталось попыток: " + attemptsCount.toString());
         prbar =  findViewById(R.id.progressBar2);
-        timer = new CountDownTimer(60000, 1000) {
+        timer = new CountDownTimer(45000, 1000) {
             @Override
             public void onTick(long l) {
                 timeout.setText("" + l/1000);
@@ -137,14 +138,8 @@ public class Main5Activity extends AppCompatActivity {
         String op = operator.getText().toString();
         // вычисляем ожидаемое значение
         switch (op) {
-            case "+":
-                expected = n1 + n2;
-                break;
-            case "-":
-                expected = n1 - n2;
-                break;
-            case "*":
-                expected = n1 * n2;
+            case "/":
+                expected = n1 / n2;
                 break;
             default:
                 expected = Integer.MAX_VALUE;
