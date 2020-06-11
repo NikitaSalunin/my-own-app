@@ -159,7 +159,7 @@ public class Main2Activity extends AppCompatActivity {
             timer.cancel();
             recreate();
         } else {
-            Toast.makeText(this, "Вы ввели неверный ответ", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Вы ввели неверный ответ. Правильный ответ: " + expected, Toast.LENGTH_LONG).show();
             attemptsCount = attemptsCount - 1;
             timer.cancel();
             // пересоздаем активити, чтобы обновить вопрос

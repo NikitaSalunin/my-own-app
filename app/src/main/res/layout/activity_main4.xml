@@ -79,14 +79,14 @@
                 android:id="@+id/yes"
                 android:layout_width="match_parent"
                 android:layout_height="110dp"
-                android:text="ДА"
+                android:text="ВЕРНО"
                 android:textSize="20sp" />
 
             <Button
                 android:id="@+id/no"
                 android:layout_width="match_parent"
                 android:layout_height="110dp"
-                android:text="НЕТ"
+                android:text="НЕВЕРНО"
                 android:textSize="20sp" />
             </LinearLayout>
 

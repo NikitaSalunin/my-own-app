@@ -196,9 +196,16 @@ public class Main4Activity extends AppCompatActivity {
             timer.cancel();
             recreate();
         } else {
-            Toast.makeText(this, "Вы ввели неверный ответ", Toast.LENGTH_LONG).show();
-            attemptsCount = attemptsCount - 1;
-            timer.cancel();
+            if (Objects.equals(expected,true)) {
+                Toast.makeText(this, "Вы ввели неверный ответ. Правильный ответ: ВЕРНО", Toast.LENGTH_LONG).show();
+                attemptsCount = attemptsCount - 1;
+                timer.cancel();
+            }
+            else {
+                Toast.makeText(this, "Вы ввели неверный ответ. Правильный ответ: НЕВЕРНО", Toast.LENGTH_LONG).show();
+                attemptsCount = attemptsCount - 1;
+                timer.cancel();
+            }
             // пересоздаем активити, чтобы обновить вопрос
             recreate();
         }
