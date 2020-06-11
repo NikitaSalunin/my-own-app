@@ -59,6 +59,16 @@ public class Main3Activity extends AppCompatActivity {
             n2 = generator.nextInt(50);
             n3 = generator.nextInt(50);
         }
+        if ("*".equals(oper2)) {
+            /* n1 = generator.nextInt(50); */
+            n2 = generator.nextInt(10);
+            n3 = generator.nextInt(10);
+        }
+        else {
+//            n1 = generator.nextInt(50);
+//            n2 = generator.nextInt(50);
+//            n3 = generator.nextInt(50);
+        }
 
         if (n1 < n2) {
             Integer tmp = n1;
