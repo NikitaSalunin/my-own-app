@@ -136,33 +136,56 @@ public class Main4Activity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void checkResult() {
         result = findViewById(R.id.result);
-        Integer actual;
-        try {
-            actual = Integer.valueOf(result.getText().toString());
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Введите ответ", Toast.LENGTH_LONG).show();
-            return;
-        }
-        Integer expected;
+//        Integer actual;
+//        try {
+//            actual = Integer.valueOf(result.getText().toString());
+//        } catch (NumberFormatException e) {
+//            e.printStackTrace();
+//            Toast.makeText(this, "Введите ответ", Toast.LENGTH_LONG).show();
+//            return;
+//        }
+        Boolean expected;
         // считываем случайные числа из TextView
         Integer n1 = Integer.valueOf(num1.getText().toString());
         Integer n2 = Integer.valueOf(num2.getText().toString());
         Integer n3 = Integer.valueOf(num3.getText().toString());
         // считываем случайный оператор из TextView
-        String op = operator.getText().toString();
+        String op1 = operator.getText().toString();
+        String op2 = operator2.getText().toString();
         // вычисляем ожидаемое значение
-        switch (op) {
+        if ("+".equals(op1)) {
+        switch (op2) {
             case "<":
-                expected = n1+n2;
+                expected = n1 + n2 < n3;
                 break;
             case ">":
-                expected = n1+n2;
+                expected = n1 + n2 > n3;
+                break;
+          default:
+              expected = false;
+        } }
+       else if ("-".equals(op1)) {
+            switch (op2) {
+            case "<":
+                expected = n1 - n2 < n3;
+                break;
+            case ">":
+                expected = n1 - n2 > n3;
                 break;
             default:
-                expected = Integer.MAX_VALUE;
-        }
-
+                expected = false;
+        } }
+       else if ("*".equals(op1)) {
+            switch (op2) {
+                case "<":
+                    expected = n1 * n2 < n3;
+                    break;
+                case ">":
+                    expected = n1 * n2 > n3;
+                    break;
+                default:
+                    expected = false;
+        } } else expected = false;
         // сравниваем ожидаемое значение и введенный пользователем ответ
         if (Objects.equals(expected, actual)) {
             Toast.makeText(this, "Поздравляем! Ваш ответ правильный", Toast.LENGTH_LONG).show();
