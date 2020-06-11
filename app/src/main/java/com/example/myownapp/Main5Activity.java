@@ -30,22 +30,30 @@ public class Main5Activity extends AppCompatActivity {
     private ProgressBar prbar;
     private CountDownTimer timer;
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main5);
         // подготовим данные для подсчета
-        // сгенерируем случайные числа для вычислений от 0 до 10
+        // сгенерируем случайные числа для вычислений от 0 до 100
         Random generator = new Random(new Date().getTime());
         Integer n1 = generator.nextInt(100);
         Integer n2 = generator.nextInt(100);
+
+
+        while (!Objects.equals(0,n1 % n2)){
+       n1 = generator.nextInt(100);
+       n2 = generator.nextInt(100);
+        }
+
         // если n1 < n2, меняем их местами
         if (n1 < n2) {
             Integer tmp = n1;
             n1 = n2;
             n2 = tmp;
         }
-        //if(n1/n2){}
+
         // сгенерируем случайный оператор
         String[] operators = new String[] {"/"};
         Integer index = new Random(new Date().getTime()).nextInt(1);
