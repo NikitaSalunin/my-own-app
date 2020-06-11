@@ -74,14 +74,14 @@ public class Main4Activity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
-                checkResult();
+                checkResult(false);
             }
         });
         yes.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
-                checkResult();
+                checkResult(true);
             }
         });
         timeout = findViewById(R.id.timeout);
@@ -134,8 +134,8 @@ public class Main4Activity extends AppCompatActivity {
         attemptsCount = savedInstanceState.getInt("attemptsCount", 3);
     }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void checkResult() {
-        result = findViewById(R.id.result);
+    private void checkResult(Boolean actual) {
+        //result = findViewById(R.id.result);
 //        Integer actual;
 //        try {
 //            actual = Integer.valueOf(result.getText().toString());
