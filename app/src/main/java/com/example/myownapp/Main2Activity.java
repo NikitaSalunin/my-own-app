@@ -155,7 +155,7 @@ public class Main2Activity extends AppCompatActivity {
             // возвращаемся в основное меню
             //Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             //startActivity(intent);
-            attemptsCount = 3;
+           // attemptsCount = 3;
             timer.cancel();
             recreate();
         } else {
