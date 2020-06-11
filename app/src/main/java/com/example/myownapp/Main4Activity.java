@@ -37,16 +37,32 @@ public class Main4Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main4);
         // подготовим данные для подсчета
-        // сгенерируем случайные числа для вычислений от 0 до 10
+        // сгенерируем случайные числа для вычислений от 0 до 50
         Random generator = new Random(new Date().getTime());
-        Integer n1 = generator.nextInt(50);
-        Integer n2 = generator.nextInt(50);
-        Integer n3 = generator.nextInt(50);
+        Integer n1;
+        Integer n2;
+        Integer n3;
         // если n1 < n2, меняем их местами
         // сгенерируем случайный оператор
         String[] operators = new String[] {"+", "-", "*"};
         Integer index = generator.nextInt(3);
         String oper1 = operators[index];
+        if ("*".equals(oper1)) {
+             n1 = generator.nextInt(10);
+             n2 = generator.nextInt(10);
+             n3 = generator.nextInt(50);
+        }
+        else {
+            n1 = generator.nextInt(50);
+            n2 = generator.nextInt(50);
+            n3 = generator.nextInt(50);
+        }
+
+        if (n1 < n2) {
+            Integer tmp = n1;
+            n1 = n2;
+            n2 = tmp;
+        }
 
         String[] operators2 = new String[] {"<", ">"};
         index = generator.nextInt(2);
